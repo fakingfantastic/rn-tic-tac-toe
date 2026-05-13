@@ -18,6 +18,7 @@ interface Props {
   moves: Move[];
   handlePlayerSelect: ({ player, location }: Omit<Move, 'value'>) => void;
   winner: number | null;
+  restart: () => void;
 }
 
 const findMoveByLocation = (moves: Move[], location: number) => {
@@ -67,12 +68,17 @@ const useTicTacToe = ({ size }: useMovesConfig): Props => {
     [moves],
   );
 
+  const restart = useCallback(() => {
+    setMove([]);
+  }, []);
+
   return {
     size,
     boxes,
     moves,
     handlePlayerSelect,
     winner,
+    restart,
   };
 };
 

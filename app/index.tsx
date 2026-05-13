@@ -1,4 +1,5 @@
 import { Board } from '@/components/board';
+import { Button } from '@/components/button';
 import { useOpponent } from '@/hooks/use-opponent';
 import { useTicTacToe } from '@/hooks/use-tic-tac-toe';
 import { useEffect } from 'react';
@@ -8,7 +9,7 @@ import { SafeAreaView } from 'react-native-safe-area-context';
 const OPPONENT_ID = 2;
 
 export default function Index() {
-  const { moves, handlePlayerSelect, boxes, winner, size } = useTicTacToe({
+  const { moves, handlePlayerSelect, boxes, winner, size, restart } = useTicTacToe({
     size: 3,
   });
 
@@ -19,7 +20,7 @@ export default function Index() {
 
   useEffect(() => {
     if (moves.length && moves.at(-1)?.player != OPPONENT_ID) {
-      handlePlayerSelect(makeMove(moves));
+      setTimeout(() => handlePlayerSelect(makeMove(moves)), Math.floor(Math.random() * 1000));
     }
   }, [moves]);
 
@@ -31,8 +32,9 @@ export default function Index() {
         alignItems: 'center',
       }}
     >
-      <Text>Winner: {winner}</Text>
-      <Board boxes={boxes} onPlayerSelect={handlePlayerSelect} size={size} />
+      {winner && <Text>Winner: {winner}</Text>}
+      {!winner && <Board boxes={boxes} onPlayerSelect={handlePlayerSelect} size={size} />}
+      <Button onPress={restart}>Restart</Button>
     </SafeAreaView>
   );
 }
