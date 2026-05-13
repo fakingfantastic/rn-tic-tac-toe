@@ -63,6 +63,11 @@ const useTicTacToe = ({ size, players }: useMovesConfig): Props => {
       if (winner) {
         return;
       }
+
+      if (currentPlayer !== player) {
+        return;
+      }
+
       setMove(currentMoves => {
         if (findMoveByLocation(currentMoves, location)) {
           throw new Error('Location already selected');
