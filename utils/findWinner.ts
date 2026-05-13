@@ -18,9 +18,11 @@ const findWinner = (moves: Move[], size: number): number | null => {
         return colWinner;
       }
 
-      const diagonalWinner = findDiagonalWinner(moves, move, size);
-      if (diagonalWinner) {
-        return diagonalWinner;
+      if (move.location === 0 || move.location === size - 1) {
+        const diagonalWinner = findDiagonalWinner(moves, move, size);
+        if (diagonalWinner) {
+          return diagonalWinner;
+        }
       }
     }
 
