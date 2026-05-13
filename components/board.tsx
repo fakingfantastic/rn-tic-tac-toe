@@ -8,9 +8,10 @@ interface Props {
   size?: number;
   boxes: BoardCellValues[];
   onPlayerSelect: (move: Omit<Move, 'value'>) => void;
+  highlightedCells: Move[] | null;
 }
 
-const Board = ({ size = 3, boxes, onPlayerSelect }: Props) => {
+const Board = ({ size = 3, boxes, onPlayerSelect, highlightedCells }: Props) => {
   return (
     <View style={{ height: SIZE * size }}>
       <FlatList<BoardCellValues>
@@ -24,6 +25,9 @@ const Board = ({ size = 3, boxes, onPlayerSelect }: Props) => {
               value={item.item}
               borderBottom={row < size - 1}
               borderRight={col < size - 1}
+              highlight={
+                highlightedCells && highlightedCells.map(x => x.location).includes(item.index)
+              }
               onSelect={() =>
                 onPlayerSelect({
                   player: CURRENT_USER_ID,

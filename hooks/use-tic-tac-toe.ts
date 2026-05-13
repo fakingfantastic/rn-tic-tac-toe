@@ -25,6 +25,7 @@ interface Props {
   winner: Winner | null;
   restart: () => void;
   currentPlayer: number | null;
+  isGameOver: boolean;
 }
 
 const findMoveByLocation = (moves: Move[], location: number) => {
@@ -49,8 +50,12 @@ const useTicTacToe = ({ size, players }: useMovesConfig): Props => {
     return winner ? null : players[moves.length % players.length];
   }, [moves]);
 
-  const winner: number | null = useMemo(() => {
+  const winner: Winner | null = useMemo(() => {
     return findWinner(moves, size);
+  }, [moves]);
+
+  const isGameOver: boolean = useMemo(() => {
+    return !!winner || moves.length === size * size;
   }, [moves]);
 
   const handlePlayerSelect = useCallback(
@@ -90,6 +95,7 @@ const useTicTacToe = ({ size, players }: useMovesConfig): Props => {
     winner,
     restart,
     currentPlayer,
+    isGameOver,
   };
 };
 

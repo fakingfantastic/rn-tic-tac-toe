@@ -7,17 +7,19 @@ interface Props {
   borderBottom?: boolean;
   borderRight?: boolean;
   onSelect?: () => void;
+  highlight: boolean;
 }
 
 const SIZE = 100;
 
-const BoardCell = ({ value, borderBottom, borderRight, onSelect }: Props) => {
+const BoardCell = ({ value, borderBottom, borderRight, onSelect, highlight }: Props) => {
   const styles = StyleSheet.create({
     cell: {
       height: SIZE,
       width: SIZE,
       alignItems: 'center',
       justifyContent: 'center',
+      backgroundColor: highlight ? 'green' : 'none',
     },
     rightBorder: {
       borderRightWidth: 2,
@@ -27,6 +29,7 @@ const BoardCell = ({ value, borderBottom, borderRight, onSelect }: Props) => {
       borderBottomWidth: 2,
       borderBottomColor: 'black',
     },
+    cellMark: { fontSize: highlight ? 32 : 24 },
   });
 
   return (
@@ -35,7 +38,7 @@ const BoardCell = ({ value, borderBottom, borderRight, onSelect }: Props) => {
       disabled={value !== null}
       style={[styles.cell, borderBottom && styles.bottomBorder, borderRight && styles.rightBorder]}
     >
-      <Text style={{ fontSize: 24 }}>{value}</Text>
+      <Text style={styles.cellMark}>{value}</Text>
     </Pressable>
   );
 };
