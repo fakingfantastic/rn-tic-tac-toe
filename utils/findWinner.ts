@@ -1,6 +1,6 @@
-import { Move } from '@/hooks/use-tic-tac-toe';
+import { Move, Winner } from '@/hooks/use-tic-tac-toe';
 
-const findWinner = (moves: Move[], size: number): number | null => {
+const findWinner = (moves: Move[], size: number): Winner | null => {
   if (moves.length < size) {
     return null;
   }
@@ -39,39 +39,39 @@ const findWinner = (moves: Move[], size: number): number | null => {
 };
 
 const findRowWinner = (moves: Move[], move: Move, size: number) => {
-  let playerIdsForRow: number[] = [];
+  let playerMoves: Move[] = [];
   for (let i = move.location; i < move.location + size; i++) {
     const moveAtLocation = moves.find(x => x.location === i);
     if (moveAtLocation) {
-      playerIdsForRow.push(moveAtLocation.player);
+      playerMoves.push(moveAtLocation);
     }
   }
 
-  if (playerIdsForRow.length === size) {
-    if ([...new Set(playerIdsForRow)].length === 1) {
-      return playerIdsForRow[0];
+  if (playerMoves.length === size) {
+    if ([...new Set(playerMoves.map(x => x.player))].length === 1) {
+      return { player: playerMoves[0].player, moves: playerMoves };
     }
   }
 };
 
 const findColumnWinner = (moves: Move[], move: Move, size: number) => {
-  let playerIdsForCol: number[] = [];
+  let playerMoves: Move[] = [];
   for (let i = move.location; i < size * size; i = i + size) {
     const moveAtLocation = moves.find(x => x.location === i);
     if (moveAtLocation) {
-      playerIdsForCol.push(moveAtLocation.player);
+      playerMoves.push(moveAtLocation);
     }
   }
 
-  if (playerIdsForCol.length === size) {
-    if ([...new Set(playerIdsForCol)].length === 1) {
-      return playerIdsForCol[0];
+  if (playerMoves.length === size) {
+    if ([...new Set(playerMoves.map(x => x.player))].length === 1) {
+      return { player: playerMoves[0].player, moves: playerMoves };
     }
   }
 };
 
 const findDiagonalWinner = (moves: Move[], move: Move, size: number) => {
-  let playerIdsForDiagonal: number[] = [];
+  let playerMoves: Move[] = [];
   let interval;
   if (move.location === 0) {
     interval = size + 1;
@@ -82,13 +82,13 @@ const findDiagonalWinner = (moves: Move[], move: Move, size: number) => {
   for (let i = move.location; i < size * size; i = i + interval) {
     const moveAtLocation = moves.find(x => x.location === i);
     if (moveAtLocation) {
-      playerIdsForDiagonal.push(moveAtLocation.player);
+      playerMoves.push(moveAtLocation);
     }
   }
 
-  if (playerIdsForDiagonal.length === size) {
-    if ([...new Set(playerIdsForDiagonal)].length === 1) {
-      return playerIdsForDiagonal[0];
+  if (playerMoves.length === size) {
+    if ([...new Set(playerMoves.map(x => x.player))].length === 1) {
+      return { player: playerMoves[0].player, moves: playerMoves };
     }
   }
 };

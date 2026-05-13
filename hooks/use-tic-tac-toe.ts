@@ -4,6 +4,7 @@ import { useCallback, useMemo, useState } from 'react';
 
 interface useMovesConfig {
   size: number;
+  players: number[];
 }
 
 export interface Move {
@@ -12,20 +13,25 @@ export interface Move {
   value: BoardCellValues;
 }
 
+export interface Winner {
+  player: number;
+  moves: Move[];
+}
 interface Props {
   size: number;
   boxes: (BoardCellValues | null)[];
   moves: Move[];
   handlePlayerSelect: ({ player, location }: Omit<Move, 'value'>) => void;
-  winner: number | null;
+  winner: Winner | null;
   restart: () => void;
+  currentPlayer: number | null;
 }
 
 const findMoveByLocation = (moves: Move[], location: number) => {
   return moves.find(x => x.location == location);
 };
 
-const useTicTacToe = ({ size }: useMovesConfig): Props => {
+const useTicTacToe = ({ size, players }: useMovesConfig): Props => {
   const [moves, setMove] = useState<Move[]>([]);
 
   const boxes = useMemo<(BoardCellValues | null)[]>(() => {
@@ -37,6 +43,10 @@ const useTicTacToe = ({ size }: useMovesConfig): Props => {
       });
 
     return res;
+  }, [moves]);
+
+  const currentPlayer: number | null = useMemo(() => {
+    return winner ? null : players[moves.length % players.length];
   }, [moves]);
 
   const winner: number | null = useMemo(() => {
@@ -79,6 +89,7 @@ const useTicTacToe = ({ size }: useMovesConfig): Props => {
     handlePlayerSelect,
     winner,
     restart,
+    currentPlayer,
   };
 };
 

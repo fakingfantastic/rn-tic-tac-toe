@@ -10,7 +10,7 @@ describe('check for a winner', () => {
       { location: 6, player: 1, value: 'o' },
     ];
 
-    expect(findWinner(moves, 3)).toBe(1);
+    expect(findWinner(moves, 3)?.player).toBe(1);
   });
 
   it('can find a row winner', () => {
@@ -21,7 +21,7 @@ describe('check for a winner', () => {
       { location: 2, player: 1, value: 'o' },
     ];
 
-    expect(findWinner(moves, 3)).toBe(1);
+    expect(findWinner(moves, 3)?.player).toBe(1);
   });
 
   it('can find a diagonal winner', () => {
@@ -32,7 +32,7 @@ describe('check for a winner', () => {
       { location: 8, player: 1, value: 'o' },
     ];
 
-    expect(findWinner(moves, 3)).toBe(1);
+    expect(findWinner(moves, 3)?.player).toBe(1);
   });
 
   it('can handle a different board size from the default', () => {
@@ -46,6 +46,6 @@ describe('check for a winner', () => {
       { location: 20, player: 1, value: 'o' },
     ];
 
-    expect(findWinner(moves, 5)).toBe(1);
+    expect(findWinner(moves, 5)?.player).toBe(1);
   });
 });
