@@ -52,6 +52,8 @@ const findRowWinner = (moves: Move[], move: Move, size: number) => {
       return { player: playerMoves[0].player, moves: playerMoves };
     }
   }
+
+  return null;
 };
 
 const findColumnWinner = (moves: Move[], move: Move, size: number) => {
@@ -68,6 +70,8 @@ const findColumnWinner = (moves: Move[], move: Move, size: number) => {
       return { player: playerMoves[0].player, moves: playerMoves };
     }
   }
+
+  return null;
 };
 
 const findDiagonalWinner = (moves: Move[], move: Move, size: number) => {
@@ -83,6 +87,8 @@ const findDiagonalWinner = (moves: Move[], move: Move, size: number) => {
     const moveAtLocation = moves.find(x => x.location === i);
     if (moveAtLocation) {
       playerMoves.push(moveAtLocation);
+    } else {
+      break;
     }
   }
 
@@ -91,6 +97,8 @@ const findDiagonalWinner = (moves: Move[], move: Move, size: number) => {
       return { player: playerMoves[0].player, moves: playerMoves };
     }
   }
+
+  return null;
 };
 
 export { findWinner };
