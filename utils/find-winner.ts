@@ -11,19 +11,24 @@ const findWinner = (moves: Move[], size: number): number | null => {
       continue;
     }
 
+    // Check Down & Diagonal
+    if (move.location < size) {
+      const colWinner = findColumnWinner(moves, move, size);
+      if (colWinner) {
+        return colWinner;
+      }
+
+      const diagonalWinner = findDiagonalWinner(moves, move, size);
+      if (diagonalWinner) {
+        return diagonalWinner;
+      }
+    }
+
     // Checking left-most row position
     if (move.location % size === 0) {
       const rowWinner = findRowWinner(moves, move, size);
       if (rowWinner) {
         return rowWinner;
-      }
-    }
-
-    // Check Down
-    if (move.location < size) {
-      const colWinner = findColumnWinner(moves, move, size);
-      if (colWinner) {
-        return colWinner;
       }
     }
   }
@@ -59,6 +64,29 @@ const findColumnWinner = (moves: Move[], move: Move, size: number) => {
   if (playerIdsForCol.length === size) {
     if ([...new Set(playerIdsForCol)].length === 1) {
       return playerIdsForCol[0];
+    }
+  }
+};
+
+const findDiagonalWinner = (moves: Move[], move: Move, size: number) => {
+  let playerIdsForDiagonal: number[] = [];
+  let interval;
+  if (move.location === 0) {
+    interval = size + 1;
+  } else {
+    interval = size - 1;
+  }
+
+  for (let i = move.location; i < size * size; i = i + interval) {
+    const moveAtLocation = moves.find(x => x.location === i);
+    if (moveAtLocation) {
+      playerIdsForDiagonal.push(moveAtLocation.player);
+    }
+  }
+
+  if (playerIdsForDiagonal.length === size) {
+    if ([...new Set(playerIdsForDiagonal)].length === 1) {
+      return playerIdsForDiagonal[0];
     }
   }
 };
