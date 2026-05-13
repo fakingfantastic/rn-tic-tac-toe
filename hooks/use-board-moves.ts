@@ -17,6 +17,10 @@ interface Props {
   handlePlayerSelect: (index: number) => void;
 }
 
+const findMoveByLocation = (moves: Move[], location: number) => {
+  return moves.find(x => x.location == location);
+};
+
 const useMoves = ({ size }: useMovesConfig): Props => {
   const [moves, setMove] = useState<Move[]>([]);
 
@@ -33,6 +37,10 @@ const useMoves = ({ size }: useMovesConfig): Props => {
 
   const handlePlayerSelect = useCallback((location: number) => {
     setMove(currentMoves => {
+      if (findMoveByLocation(currentMoves, location)) {
+        throw new Error('Location already selected');
+      }
+
       const move: Move = {
         player:
           currentMoves.length == 0 || currentMoves[currentMoves.length - 1].player == 2 ? 1 : 2,

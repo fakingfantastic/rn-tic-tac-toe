@@ -32,6 +32,7 @@ const BoardCell = ({ value, borderBottom, borderRight, onSelect }: Props) => {
   return (
     <Pressable
       onPress={onSelect}
+      disabled={value !== null}
       style={[styles.cell, borderBottom && styles.bottomBorder, borderRight && styles.rightBorder]}
     >
       <Text style={{ fontSize: 24 }}>{value}</Text>
