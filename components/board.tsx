@@ -1,14 +1,17 @@
-import { useMoves } from '@/hooks/use-board-moves';
 import { useOpponent } from '@/hooks/use-opponent';
+import { useTicTacToe } from '@/hooks/use-tic-tac-toe';
 import { useEffect } from 'react';
-import { FlatList, View } from 'react-native';
+import { FlatList, Text, View } from 'react-native';
 import { BoardCell, BoardCellValues, SIZE } from './board-cell';
 interface Props {
   size?: number;
 }
+
+const CURRENT_USER_ID = 1;
+const OPPONENT_ID = 2;
+
 const Board = ({ size = 3 }: Props) => {
-  const OPPONENT_ID = 2;
-  const { moves, handlePlayerSelect, boxes } = useMoves({
+  const { moves, handlePlayerSelect, boxes, winner } = useTicTacToe({
     size,
   });
 
@@ -19,12 +22,13 @@ const Board = ({ size = 3 }: Props) => {
 
   useEffect(() => {
     if (moves.length && moves.at(-1)?.player != OPPONENT_ID) {
-      handlePlayerSelect({ ...makeMove(moves) });
+      handlePlayerSelect(makeMove(moves));
     }
   }, [moves]);
 
   return (
     <View style={{ height: SIZE * size }}>
+      <Text>Winner: {winner}</Text>
       <FlatList<BoardCellValues>
         numColumns={size}
         data={boxes}
@@ -38,7 +42,7 @@ const Board = ({ size = 3 }: Props) => {
               borderRight={col < size - 1}
               onSelect={() =>
                 handlePlayerSelect({
-                  player: 1,
+                  player: CURRENT_USER_ID,
                   location: item.index,
                 })
               }

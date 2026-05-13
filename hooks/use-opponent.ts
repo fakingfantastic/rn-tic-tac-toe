@@ -10,7 +10,7 @@ const useOpponent = ({ opponentId, size }: { opponentId: number; size: number })
 
     // TODO Refine opponent selection logic
     const availableLocations = [...Array(size * size)]
-      .map((_, i) => i + 1)
+      .map((_, i) => i)
       .filter(x => !selectedLocations.includes(x));
 
     return {

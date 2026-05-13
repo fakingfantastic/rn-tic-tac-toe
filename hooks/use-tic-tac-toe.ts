@@ -1,4 +1,5 @@
 import { BoardCellValues } from '@/components/board-cell';
+import { findWinner } from '@/utils/find-winner';
 import { useCallback, useMemo, useState } from 'react';
 
 interface useMovesConfig {
@@ -15,13 +16,14 @@ interface Props {
   boxes: (BoardCellValues | null)[];
   moves: Move[];
   handlePlayerSelect: ({ player, location }: Omit<Move, 'value'>) => void;
+  winner: number | null;
 }
 
 const findMoveByLocation = (moves: Move[], location: number) => {
   return moves.find(x => x.location == location);
 };
 
-const useMoves = ({ size }: useMovesConfig): Props => {
+const useTicTacToe = ({ size }: useMovesConfig): Props => {
   const [moves, setMove] = useState<Move[]>([]);
 
   const boxes = useMemo<(BoardCellValues | null)[]>(() => {
@@ -33,6 +35,10 @@ const useMoves = ({ size }: useMovesConfig): Props => {
       });
 
     return res;
+  }, [moves]);
+
+  const winner: number | null = useMemo(() => {
+    return findWinner(moves, size);
   }, [moves]);
 
   const handlePlayerSelect = useCallback(({ player, location }: Omit<Move, 'value'>) => {
@@ -58,7 +64,8 @@ const useMoves = ({ size }: useMovesConfig): Props => {
     boxes,
     moves,
     handlePlayerSelect,
+    winner,
   };
 };
 
-export { useMoves };
+export { useTicTacToe };
