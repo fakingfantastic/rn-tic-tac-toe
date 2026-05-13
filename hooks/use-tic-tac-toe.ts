@@ -1,5 +1,5 @@
 import { BoardCellValues } from '@/components/board-cell';
-import { findWinner } from '@/utils/find-winner';
+import { findWinner } from '@/utils/findWinner';
 import { useCallback, useMemo, useState } from 'react';
 
 interface useMovesConfig {

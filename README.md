@@ -14,6 +14,12 @@
    npx expo start
    ```
 
+3. To run the test, such as for the finding winner logic, run
+
+   ```bash
+   npm run test
+   ```
+
 ## Technical Debt Conciderations
 
 - Right now, we are assuming support for only 2 players. As such, logic liberties were taken:
