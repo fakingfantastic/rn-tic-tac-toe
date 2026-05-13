@@ -13,6 +13,7 @@ export interface Move {
 }
 
 interface Props {
+  size: number;
   boxes: (BoardCellValues | null)[];
   moves: Move[];
   handlePlayerSelect: ({ player, location }: Omit<Move, 'value'>) => void;
@@ -41,26 +42,33 @@ const useTicTacToe = ({ size }: useMovesConfig): Props => {
     return findWinner(moves, size);
   }, [moves]);
 
-  const handlePlayerSelect = useCallback(({ player, location }: Omit<Move, 'value'>) => {
-    setMove(currentMoves => {
-      if (findMoveByLocation(currentMoves, location)) {
-        throw new Error('Location already selected');
+  const handlePlayerSelect = useCallback(
+    ({ player, location }: Omit<Move, 'value'>) => {
+      if (winner) {
+        return;
       }
+      setMove(currentMoves => {
+        if (findMoveByLocation(currentMoves, location)) {
+          throw new Error('Location already selected');
+        }
 
-      const move: Move = {
-        player,
-        location,
-        value:
-          currentMoves.length == 0 || currentMoves[currentMoves.length - 1].value == 'o'
-            ? 'x'
-            : 'o',
-      };
+        const move: Move = {
+          player,
+          location,
+          value:
+            currentMoves.length == 0 || currentMoves[currentMoves.length - 1].value == 'o'
+              ? 'x'
+              : 'o',
+        };
 
-      return [...currentMoves, move];
-    });
-  }, []);
+        return [...currentMoves, move];
+      });
+    },
+    [moves],
+  );
 
   return {
+    size,
     boxes,
     moves,
     handlePlayerSelect,
