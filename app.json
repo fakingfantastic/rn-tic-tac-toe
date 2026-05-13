@@ -9,7 +9,8 @@
     "userInterfaceStyle": "automatic",
     "newArchEnabled": true,
     "ios": {
-      "supportsTablet": true
+      "supportsTablet": true,
+      "bundleIdentifier": "com.fastdraft.rn-tic-tac-toe"
     },
     "android": {
       "adaptiveIcon": {
@@ -37,6 +38,14 @@
           "dark": {
             "backgroundColor": "#000000"
           }
+        }
+      ],
+      [
+        "expo-font",
+        {
+          "fonts": [
+            "node_modules/@expo-google-fonts/fredoka/600SemiBold/Fredoka_600SemiBold.ttf"
+          ]
         }
       ]
     ],

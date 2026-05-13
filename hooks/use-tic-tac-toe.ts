@@ -46,12 +46,12 @@ const useTicTacToe = ({ size, players }: useMovesConfig): Props => {
     return res;
   }, [moves]);
 
-  const currentPlayer: number | null = useMemo(() => {
-    return winner ? null : players[moves.length % players.length];
-  }, [moves]);
-
   const winner: Winner | null = useMemo(() => {
     return findWinner(moves, size);
+  }, [moves]);
+
+  const currentPlayer: number | null = useMemo(() => {
+    return winner ? null : players[moves.length % players.length];
   }, [moves]);
 
   const isGameOver: boolean = useMemo(() => {
