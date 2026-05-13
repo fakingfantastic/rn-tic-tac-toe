@@ -5,7 +5,7 @@ interface useMovesConfig {
   size: number;
 }
 
-interface Move {
+export interface Move {
   player: number;
   location: number;
   value: BoardCellValues;
@@ -14,7 +14,7 @@ interface Move {
 interface Props {
   boxes: (BoardCellValues | null)[];
   moves: Move[];
-  handlePlayerSelect: (index: number) => void;
+  handlePlayerSelect: ({ player, location }: Omit<Move, 'value'>) => void;
 }
 
 const findMoveByLocation = (moves: Move[], location: number) => {
@@ -35,15 +35,14 @@ const useMoves = ({ size }: useMovesConfig): Props => {
     return res;
   }, [moves]);
 
-  const handlePlayerSelect = useCallback((location: number) => {
+  const handlePlayerSelect = useCallback(({ player, location }: Omit<Move, 'value'>) => {
     setMove(currentMoves => {
       if (findMoveByLocation(currentMoves, location)) {
         throw new Error('Location already selected');
       }
 
       const move: Move = {
-        player:
-          currentMoves.length == 0 || currentMoves[currentMoves.length - 1].player == 2 ? 1 : 2,
+        player,
         location,
         value:
           currentMoves.length == 0 || currentMoves[currentMoves.length - 1].value == 'o'
