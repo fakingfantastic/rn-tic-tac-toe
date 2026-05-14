@@ -2,6 +2,7 @@ import { AppLogo } from '@/components/app-logo';
 import { Board } from '@/components/board';
 import { Button } from '@/components/button';
 import { Card } from '@/components/card';
+import { PointsChip } from '@/components/points-chip';
 import { useOpponent } from '@/hooks/use-opponent';
 import { useTicTacToe } from '@/hooks/use-tic-tac-toe';
 import { LinearGradient } from 'expo-linear-gradient';
@@ -40,6 +41,10 @@ export default function Index() {
           gap: 16,
         }}
       >
+        <View style={{ width: '100%', flexDirection: 'row', justifyContent: 'flex-end' }}>
+          {/* TODO: Award Points for Games Won */}
+          <PointsChip />
+        </View>
         <AppLogo />
         {isGameOver && (
           <View>
@@ -47,13 +52,14 @@ export default function Index() {
             <Text>{winner ? `Winner: ${winner.player}` : 'No Winner'}</Text>
           </View>
         )}
-        <View style={{ flex: 1, justifyContent: 'center' }}>
+        <View style={{ flex: 1, justifyContent: 'center', gap: 4 }}>
           <Board
             boxes={boxes}
             onPlayerSelect={handlePlayerSelect}
             size={size}
             highlightedCells={winner?.moves}
           />
+          <Button onPress={restart}>Restart</Button>
         </View>
         <Card>
           <Text
@@ -61,13 +67,24 @@ export default function Index() {
               fontFamily: 'Fredoka-SemiBold',
               fontWeight: 600,
               fontSize: 21,
+              color: '#CC86D1',
               textAlign: 'center',
             }}
           >
-            Who's Turn: Player {currentPlayer}
+            {currentPlayer == 1 ? "It's Your Turn!" : 'Waiting on Opponent..'}
+          </Text>
+          <Text
+            style={{
+              fontFamily: 'Fredoka-SemiBold',
+              fontWeight: 600,
+              fontSize: 16,
+              color: '#606060',
+              textAlign: 'center',
+            }}
+          >
+            Player {currentPlayer}
           </Text>
         </Card>
-        <Button onPress={restart}>Restart</Button>
       </SafeAreaView>
     </LinearGradient>
   );
