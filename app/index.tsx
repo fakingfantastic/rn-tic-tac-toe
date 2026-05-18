@@ -77,7 +77,7 @@ export default function Index() {
             style={{
               fontFamily: 'Fredoka-SemiBold',
               fontWeight: 600,
-              fontSize: 16,
+              fontSize: 14,
               color: '#606060',
               textAlign: 'center',
             }}

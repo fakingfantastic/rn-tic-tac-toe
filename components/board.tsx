@@ -25,6 +25,7 @@ const Board = ({ size = 3, boxes, onPlayerSelect, highlightedCells }: Props) => 
               value={item.item}
               borderBottom={row < size - 1}
               borderRight={col < size - 1}
+              color={item?.item === 'x' ? '#CC86D1' : '#DCFFBD'}
               highlight={
                 highlightedCells && highlightedCells.map(x => x.location).includes(item.index)
               }
