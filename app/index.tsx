@@ -7,7 +7,7 @@ import { useOpponent } from '@/hooks/use-opponent';
 import { useTheme } from '@/hooks/use-theme';
 import { useTicTacToe } from '@/hooks/use-tic-tac-toe';
 import { LinearGradient } from 'expo-linear-gradient';
-import { useEffect } from 'react';
+import { useCallback, useEffect, useState } from 'react';
 import { Modal, Pressable, Text, View } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import Svg, { ClipPath, Defs, G, Path } from 'react-native-svg';
@@ -16,6 +16,7 @@ const OPPONENT_ID = 2;
 
 export default function Index() {
   const theme = useTheme();
+  const [boardKey, setBoardKey] = useState<number>(0);
   const { moves, handlePlayerSelect, boxes, winner, size, currentPlayer, restart, isGameOver } =
     useTicTacToe({
       size: 3,
@@ -32,6 +33,12 @@ export default function Index() {
       setTimeout(() => handlePlayerSelect(makeMove(moves)), Math.floor(Math.random() * 2000));
     }
   }, [moves]);
+
+  /* TODO: Handle this inside the Board component */
+  const handleRestart = useCallback(() => {
+    setBoardKey(Math.random() * 1000);
+    restart();
+  }, [restart]);
 
   return (
     <LinearGradient colors={['#DCFFBD', '#CC86D1']} style={{ flex: 1 }} start={[0, 0]} end={[1, 1]}>
@@ -55,10 +62,10 @@ export default function Index() {
             onPlayerSelect={handlePlayerSelect}
             size={size}
             highlightedCells={winner?.moves}
-            key={}
+            key={boardKey}
           />
           <Pressable
-            onPress={restart}
+            onPress={handleRestart}
             style={{ flexDirection: 'row', gap: 6, alignItems: 'center', justifyContent: 'center' }}
           >
             <Svg width="24" height="24" fill="none" viewBox="0 0 24 24">
@@ -114,7 +121,7 @@ export default function Index() {
               }}
             >
               <Pressable
-                onPress={restart}
+                onPress={handleRestart}
                 style={{ position: 'absolute', top: 16, right: 16, opacity: 0.5 }}
               >
                 <Svg width="32" height="32" fill="none" viewBox="0 0 24 24">
@@ -157,7 +164,7 @@ export default function Index() {
                         You have earned 50 tokens!
                       </Text>
                     </View>
-                    <Button onPress={restart}>
+                    <Button onPress={handleRestart}>
                       <Text style={{ fontWeight: 'bold', color: theme.colors.white }}>
                         Play & Get More Tokens
                       </Text>
@@ -188,7 +195,7 @@ export default function Index() {
                       </Text>
                       <Text style={{ fontSize: 16 }}>It happens to the best of us</Text>
                     </View>
-                    <Button onPress={restart}>
+                    <Button onPress={handleRestart}>
                       <Text style={{ fontWeight: 'bold', color: theme.colors.white }}>
                         Try Again
                       </Text>
