@@ -22,7 +22,7 @@ interface Props {
 
 const SIZE = 100;
 
-function Mark({ value, color }: Pick<Props, 'value', 'color'>) {
+function Mark({ value, color }: Pick<Props, 'value' | 'color'>) {
   if (!value) {
     return;
   }

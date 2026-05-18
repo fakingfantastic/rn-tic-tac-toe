@@ -1,22 +1,20 @@
+import { useTheme } from '@/hooks/use-theme';
 import { PropsWithChildren } from 'react';
-import { Pressable, Text, View } from 'react-native';
+import { Pressable, View } from 'react-native';
 
 const Button = ({ children, onPress }: PropsWithChildren<{ onPress: () => void }>) => {
+  const theme = useTheme();
   return (
     <Pressable
       onPress={onPress}
       style={{
-        backgroundColor: 'hsla(0, 0%, 90%, 1.0)',
         paddingVertical: 8,
         paddingHorizontal: 12,
-        borderRadius: 3,
-        borderWidth: 1,
-        borderColor: 'rgba(0,0,0,.25)',
+        borderRadius: 24,
+        backgroundColor: theme.light.button.primary,
       }}
     >
-      <View style={{ flexDirection: 'row', alignItems: 'center', gap: 4 }}>
-        <Text>{children}</Text>
-      </View>
+      <View style={{ flexDirection: 'row', alignItems: 'center', gap: 4 }}>{children}</View>
     </Pressable>
   );
 };
