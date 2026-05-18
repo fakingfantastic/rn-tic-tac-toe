@@ -1,4 +1,12 @@
+import { useEffect } from 'react';
 import { Pressable, StyleSheet, View } from 'react-native';
+import Animated, {
+  interpolate,
+  useAnimatedStyle,
+  useSharedValue,
+  withSpring,
+} from 'react-native-reanimated';
+
 import { Path, Svg } from 'react-native-svg';
 
 type BoardCellValues = 'x' | 'o' | null;
@@ -40,6 +48,22 @@ function Mark({ value, color }: Pick<Props, 'value', 'color'>) {
 }
 
 function BoardCell({ value, borderBottom, borderRight, onSelect, highlight, color }: Props) {
+  const animatedValue = useSharedValue(0);
+  useEffect(() => {
+    if (value) {
+      animatedValue.value = withSpring(1, { duration: 75 });
+    }
+  }, [animatedValue, value]);
+
+  const animatedStyles = useAnimatedStyle(() => ({
+    position: 'relative',
+    opacity: animatedValue.value,
+    transform: [
+      { rotateZ: `${interpolate(animatedValue.value, [0, 1], [-90, 0])}deg` },
+      { scale: interpolate(animatedValue.value, [0, 1], [0.5, 1]) },
+    ],
+  }));
+
   const styles = StyleSheet.create({
     cell: {
       height: SIZE,
@@ -65,14 +89,14 @@ function BoardCell({ value, borderBottom, borderRight, onSelect, highlight, colo
       disabled={value !== null}
       style={[styles.cell, borderBottom && styles.bottomBorder, borderRight && styles.rightBorder]}
     >
-      <View style={{ position: 'relative' }}>
+      <Animated.View style={[animatedStyles]}>
         <View style={{ position: 'relative', zIndex: 1 }}>
           <Mark value={value} color={color} />
         </View>
         <View style={{ position: 'absolute', left: 4, top: 4 }}>
           <Mark value={value} color={'rgba(0,0,0,.1)'} />
         </View>
-      </View>
+      </Animated.View>
     </Pressable>
   );
 }
