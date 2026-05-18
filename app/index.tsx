@@ -3,6 +3,7 @@ import { Board } from '@/components/board';
 import { Button } from '@/components/button';
 import { CurrentPlayerInfo } from '@/components/current-player-info';
 import { PointsChip } from '@/components/points-chip';
+import { RestartButton } from '@/components/restart-button';
 import { useOpponent } from '@/hooks/use-opponent';
 import { useTheme } from '@/hooks/use-theme';
 import { useTicTacToe } from '@/hooks/use-tic-tac-toe';
@@ -10,13 +11,14 @@ import { LinearGradient } from 'expo-linear-gradient';
 import { useCallback, useEffect, useState } from 'react';
 import { Modal, Pressable, Text, View } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
-import Svg, { ClipPath, Defs, G, Path } from 'react-native-svg';
+import Svg, { Path } from 'react-native-svg';
 
 const OPPONENT_ID = 2;
 
 export default function Index() {
   const theme = useTheme();
   const [boardKey, setBoardKey] = useState<number>(0);
+  const [showModal, setShowModal] = useState<boolean>(false);
   const { moves, handlePlayerSelect, boxes, winner, size, currentPlayer, restart, isGameOver } =
     useTicTacToe({
       size: 3,
@@ -29,14 +31,25 @@ export default function Index() {
   });
 
   useEffect(() => {
-    if (moves.length && moves.at(-1)?.player != OPPONENT_ID) {
+    if (moves.length && moves.at(-1)?.player !== OPPONENT_ID) {
       setTimeout(() => handlePlayerSelect(makeMove(moves)), Math.floor(Math.random() * 2000));
     }
-  }, [moves]);
+  }, [moves, handlePlayerSelect]);
+
+  useEffect(() => {
+    if (isGameOver) {
+      setShowModal(true);
+    }
+  }, [isGameOver]);
+
+  const handleClose = useCallback(() => {
+    setShowModal(false);
+  }, []);
 
   /* TODO: Handle this inside the Board component */
   const handleRestart = useCallback(() => {
     setBoardKey(Math.random() * 1000);
+    setShowModal(false);
     restart();
   }, [restart]);
 
@@ -64,38 +77,11 @@ export default function Index() {
             highlightedCells={winner?.moves}
             key={boardKey}
           />
-          <Pressable
-            onPress={handleRestart}
-            style={{ flexDirection: 'row', gap: 6, alignItems: 'center', justifyContent: 'center' }}
-          >
-            <Svg width="24" height="24" fill="none" viewBox="0 0 24 24">
-              <G
-                stroke="#292929"
-                stroke-linecap="round"
-                stroke-linejoin="round"
-                stroke-width="2.5"
-                clip-path="url(#a)"
-              >
-                <Path d="M12 3a9 9 0 1 1-5.657 2" />
-                <Path d="M3 4.5h4v4" />
-              </G>
-              <Defs>
-                <ClipPath id="a">
-                  <Path fill="#fff" d="M0 0h24v24H0z" />
-                </ClipPath>
-              </Defs>
-            </Svg>
-            <Text>Restart</Text>
-          </Pressable>
+          <RestartButton onPress={handleRestart} />
         </View>
         <CurrentPlayerInfo currentPlayer={currentPlayer} />
 
-        <Modal
-          animationType="slide"
-          transparent={true}
-          visible={isGameOver}
-          onRequestClose={() => {}}
-        >
+        <Modal animationType="slide" transparent={true} visible={showModal}>
           <View
             style={{
               flex: 1,
@@ -106,8 +92,10 @@ export default function Index() {
             <View
               style={{
                 margin: 20,
-                backgroundColor: 'white',
+                backgroundColor: 'rgba(255,255,255,.95)',
                 borderRadius: 20,
+                borderWidth: 3,
+                borderColor: 'white',
                 padding: 35,
                 alignItems: 'center',
                 shadowColor: '#000',
@@ -158,7 +146,7 @@ export default function Index() {
                           color: theme.colors.fuchsia400,
                         }}
                       >
-                        You&apos;ve Won!
+                        You Won!
                       </Text>
                       <Text style={{ fontSize: 16, color: theme.light.text.primary }}>
                         You have earned 50 tokens!
@@ -193,7 +181,9 @@ export default function Index() {
                       >
                         Bummer, you lost!
                       </Text>
-                      <Text style={{ fontSize: 16 }}>It happens to the best of us</Text>
+                      <Text style={{ fontSize: 16, color: theme.light.text.primary }}>
+                        It happens to the best of us
+                      </Text>
                     </View>
                     <Button onPress={handleRestart}>
                       <Text style={{ fontWeight: 'bold', color: theme.colors.white }}>
@@ -203,6 +193,29 @@ export default function Index() {
                   </View>
                 )}
                 {/* TODO: Modal for no winner */}
+                {winner === null && (
+                  <View style={{ gap: 16, alignItems: 'center' }}>
+                    <View style={{ alignItems: 'center' }}>
+                      <Text
+                        style={{
+                          fontSize: 32,
+                          fontFamily: 'Fredoka-Bold',
+                          color: theme.colors.fuchsia400,
+                        }}
+                      >
+                        It&apos;s a Draw!
+                      </Text>
+                      <Text style={{ fontSize: 16, color: theme.light.text.primary }}>
+                        You were so close... so were they!
+                      </Text>
+                    </View>
+                    <Button onPress={handleRestart}>
+                      <Text style={{ fontWeight: 'bold', color: theme.colors.white }}>
+                        Try Again
+                      </Text>
+                    </Button>
+                  </View>
+                )}
               </View>
             </View>
           </View>

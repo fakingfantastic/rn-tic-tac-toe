@@ -1,3 +1,4 @@
+import { useTheme } from '@/hooks/use-theme';
 import { useEffect } from 'react';
 import { Pressable, StyleSheet, View } from 'react-native';
 import Animated, {
@@ -48,6 +49,7 @@ function Mark({ value, color }: Pick<Props, 'value' | 'color'>) {
 }
 
 function BoardCell({ value, borderBottom, borderRight, onSelect, highlight, color }: Props) {
+  const theme = useTheme();
   const animatedValue = useSharedValue(0);
   useEffect(() => {
     if (value) {
@@ -70,15 +72,14 @@ function BoardCell({ value, borderBottom, borderRight, onSelect, highlight, colo
       width: SIZE,
       alignItems: 'center',
       justifyContent: 'center',
-      backgroundColor: highlight ? 'green' : 'none',
     },
     rightBorder: {
       borderRightWidth: 2,
-      borderRightColor: 'black',
+      borderRightColor: theme.colors.purple900,
     },
     bottomBorder: {
       borderBottomWidth: 2,
-      borderBottomColor: 'black',
+      borderBottomColor: theme.colors.purple900,
     },
     cellMark: { fontSize: highlight ? 32 : 24 },
   });
@@ -91,7 +92,7 @@ function BoardCell({ value, borderBottom, borderRight, onSelect, highlight, colo
     >
       <Animated.View style={[animatedStyles]}>
         <View style={{ position: 'relative', zIndex: 1 }}>
-          <Mark value={value} color={color} />
+          <Mark value={value} color={highlight ? 'green' : color} />
         </View>
         <View style={{ position: 'absolute', left: 4, top: 4 }}>
           <Mark value={value} color={'rgba(0,0,0,.1)'} />
