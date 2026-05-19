@@ -74,11 +74,11 @@ function BoardCell({ value, borderBottom, borderRight, onSelect, highlight, colo
       justifyContent: 'center',
     },
     rightBorder: {
-      borderRightWidth: 2,
+      borderRightWidth: 5,
       borderRightColor: theme.colors.purple900,
     },
     bottomBorder: {
-      borderBottomWidth: 2,
+      borderBottomWidth: 5,
       borderBottomColor: theme.colors.purple900,
     },
     cellMark: { fontSize: highlight ? 32 : 24 },

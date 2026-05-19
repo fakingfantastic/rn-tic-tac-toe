@@ -2,7 +2,7 @@ import { LinearGradient } from 'expo-linear-gradient';
 import { Text, View } from 'react-native';
 import { Path, Svg } from 'react-native-svg';
 
-export function PointsChip({}) {
+export function PointsChip({ points }: { points: number }) {
   return (
     <LinearGradient
       colors={['#CC86D1', '#7f7fd5']}
@@ -24,7 +24,7 @@ export function PointsChip({}) {
         <Text
           style={{ color: '#c0f0f0', fontFamily: 'Fedorka-Bold', fontWeight: 700, fontSize: 16 }}
         >
-          657
+          {points}
         </Text>
       </View>
     </LinearGradient>

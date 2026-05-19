@@ -5,6 +5,7 @@ import { CurrentPlayerInfo } from '@/components/current-player-info';
 import { PointsChip } from '@/components/points-chip';
 import { RestartButton } from '@/components/restart-button';
 import { useOpponent } from '@/hooks/use-opponent';
+import { usePoints } from '@/hooks/use-points';
 import { useTheme } from '@/hooks/use-theme';
 import { useTicTacToe } from '@/hooks/use-tic-tac-toe';
 import { LinearGradient } from 'expo-linear-gradient';
@@ -16,6 +17,7 @@ import Svg, { Path } from 'react-native-svg';
 const OPPONENT_ID = 2;
 
 export default function Index() {
+  const { points, addPoints } = usePoints();
   const theme = useTheme();
   const [boardKey, setBoardKey] = useState<number>(0);
   const [showModal, setShowModal] = useState<boolean>(false);
@@ -34,13 +36,17 @@ export default function Index() {
     if (moves.length && moves.at(-1)?.player !== OPPONENT_ID) {
       setTimeout(() => handlePlayerSelect(makeMove(moves)), Math.floor(Math.random() * 2000));
     }
-  }, [moves, handlePlayerSelect]);
+  }, [moves, makeMove, handlePlayerSelect]);
 
   useEffect(() => {
     if (isGameOver) {
       setShowModal(true);
     }
-  }, [isGameOver]);
+    if (winner?.player === 1) {
+      console.log(isGameOver, winner, addPoints);
+      addPoints(50);
+    }
+  }, [isGameOver, winner, addPoints]);
 
   const handleClose = useCallback(() => {
     setShowModal(false);
@@ -66,7 +72,7 @@ export default function Index() {
       >
         <View style={{ width: '100%', flexDirection: 'row', justifyContent: 'flex-end' }}>
           {/* TODO: Award Points for Games Won */}
-          <PointsChip />
+          <PointsChip points={points} />
         </View>
         <AppLogo />
         <View style={{ flex: 1, justifyContent: 'center', gap: 16 }}>
@@ -109,7 +115,7 @@ export default function Index() {
               }}
             >
               <Pressable
-                onPress={handleRestart}
+                onPress={handleClose}
                 style={{ position: 'absolute', top: 16, right: 16, opacity: 0.5 }}
               >
                 <Svg width="32" height="32" fill="none" viewBox="0 0 24 24">
@@ -192,7 +198,6 @@ export default function Index() {
                     </Button>
                   </View>
                 )}
-                {/* TODO: Modal for no winner */}
                 {winner === null && (
                   <View style={{ gap: 16, alignItems: 'center' }}>
                     <View style={{ alignItems: 'center' }}>
