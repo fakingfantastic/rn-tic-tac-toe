@@ -33,10 +33,10 @@ export default function Index() {
   });
 
   useEffect(() => {
-    if (moves.length && moves.at(-1)?.player !== OPPONENT_ID) {
+    if (moves.length && moves.at(-1)?.player !== OPPONENT_ID && !isGameOver) {
       setTimeout(() => handlePlayerSelect(makeMove(moves)), Math.floor(Math.random() * 2000));
     }
-  }, [moves, makeMove, handlePlayerSelect]);
+  }, [moves, makeMove, handlePlayerSelect, isGameOver]);
 
   useEffect(() => {
     if (isGameOver) {
@@ -85,7 +85,7 @@ export default function Index() {
           />
           <RestartButton onPress={handleRestart} />
         </View>
-        <CurrentPlayerInfo currentPlayer={currentPlayer} />
+        {!isGameOver && <CurrentPlayerInfo currentPlayer={currentPlayer} />}
 
         <Modal animationType="slide" transparent={true} visible={showModal}>
           <View
@@ -155,12 +155,12 @@ export default function Index() {
                         You Won!
                       </Text>
                       <Text style={{ fontSize: 16, color: theme.light.text.primary }}>
-                        You have earned 50 tokens!
+                        You have earned <Text style={{ fontWeight: 'bold' }}>50</Text> tokens
                       </Text>
                     </View>
                     <Button onPress={handleRestart}>
                       <Text style={{ fontWeight: 'bold', color: theme.colors.white }}>
-                        Play & Get More Tokens
+                        Play Again
                       </Text>
                     </Button>
                   </View>
