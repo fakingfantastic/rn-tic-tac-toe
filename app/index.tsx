@@ -4,6 +4,7 @@ import { CurrentPlayerInfo } from '@/components/current-player-info';
 import { GameOverModal } from '@/components/game-over-modal';
 import { PointsChip } from '@/components/points-chip';
 import { RestartButton } from '@/components/restart-button';
+import { useTheme } from '@/hooks/use-theme';
 import { LinearGradient } from 'expo-linear-gradient';
 import { Modal, View } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
@@ -25,9 +26,15 @@ export default function Index() {
     isGameOver,
   } = useHome();
   const styles = useHomeStyles();
+  const theme = useTheme();
 
   return (
-    <LinearGradient colors={['#DCFFBD', '#CC86D1']} style={{ flex: 1 }} start={[0, 0]} end={[1, 1]}>
+    <LinearGradient
+      colors={[theme.light.backgroundGradient.start, theme.light.backgroundGradient.end]}
+      style={{ flex: 1 }}
+      start={[0, 0]}
+      end={[1, 1]}
+    >
       <SafeAreaView style={styles.wrapper}>
         <View style={styles.headerBrowWrapper}>
           <PointsChip points={points} />

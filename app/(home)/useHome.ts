@@ -1,13 +1,11 @@
 import { players } from '@/constants/players';
 import { useOpponent } from '@/hooks/use-opponent';
 import { usePoints } from '@/hooks/use-points';
-import { useTheme } from '@/hooks/use-theme';
 import { useTicTacToe } from '@/hooks/use-tic-tac-toe';
 import { useCallback, useEffect, useState } from 'react';
 
 export function useHome() {
   const { points, addPoints } = usePoints();
-  const theme = useTheme();
   const [boardKey, setBoardKey] = useState<number>(0);
   const [showModal, setShowModal] = useState<boolean>(false);
   const { moves, handlePlayerSelect, boxes, winner, size, currentPlayer, restart, isGameOver } =
