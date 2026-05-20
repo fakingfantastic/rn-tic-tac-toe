@@ -1,6 +1,8 @@
+import { useTheme } from '@/hooks/use-theme';
 import { StyleSheet } from 'react-native';
 
 export const useGameOverModalStyles = () => {
+  const theme = useTheme();
   return StyleSheet.create({
     modalWrapper: {
       flex: 1,
@@ -25,5 +27,13 @@ export const useGameOverModalStyles = () => {
       elevation: 5,
     },
     modalCloseButton: { position: 'absolute', top: 16, right: 16, opacity: 0.5 },
+    contentWrapper: { gap: 16, alignItems: 'center' },
+    titleText: {
+      fontSize: 32,
+      fontFamily: 'Fredoka-Bold',
+      color: theme.colors.fuchsia400,
+    },
+    descriptionText: { fontSize: 16, color: theme.light.text.primary, textAlign: 'center' },
+    buttonText: { fontWeight: 'bold', color: theme.colors.white },
   });
 };

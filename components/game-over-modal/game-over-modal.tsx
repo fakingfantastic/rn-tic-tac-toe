@@ -5,6 +5,10 @@ import { Pressable, Text, View } from 'react-native';
 import Svg, { Path } from 'react-native-svg';
 import { useGameOverModalStyles } from './useGameOverModalStyles';
 
+function getRandomElement(array: string[]) {
+  return array[Math.floor(Math.random() * array.length)];
+}
+
 export function GameOverModal({
   onClose,
   onRestart,
@@ -23,11 +27,24 @@ export function GameOverModal({
     },
     lose: {
       title: 'Bummer, you lost!',
-      description: 'It happens to the best of us',
+      description: (() => {
+        return getRandomElement([
+          'It happens to the best of us',
+          'Defeat today, comeback story tomorrow.',
+          'That one was just a warm-up for your next win.',
+        ]);
+      })(),
     },
     draw: {
       title: "It's a Draw!",
-      description: 'You were so close... so were they!',
+      description: (() => {
+        return getRandomElement([
+          'You were so close... so were they!',
+          'Nobody lost... but nobody escaped either.',
+          'Too evenly matched to call',
+          'Both sides played like winners',
+        ]);
+      })(),
     },
   };
 
@@ -52,7 +69,7 @@ export function GameOverModal({
           </Svg>
         </Pressable>
         <View>
-          <View style={{ gap: 16, alignItems: 'center' }}>
+          <View style={styles.contentWrapper}>
             <Svg width="64" height="64" fill="none" viewBox="0 -2.5 160 160">
               <Path
                 fill={theme.colors.fuchsia600}
@@ -64,27 +81,17 @@ export function GameOverModal({
               />
             </Svg>
             <View style={{ alignItems: 'center' }}>
-              <Text
-                style={{
-                  fontSize: 32,
-                  fontFamily: 'Fredoka-Bold',
-                  color: theme.colors.fuchsia400,
-                }}
-              >
-                {contentData.title}
-              </Text>
+              <Text style={styles.titleText}>{contentData.title}</Text>
               {contentKey === 'win' ? (
-                <Text style={{ fontSize: 16, color: theme.light.text.primary }}>
+                <Text style={styles.descriptionText}>
                   You have earned <Text style={{ fontWeight: 'bold' }}>50</Text> tokens
                 </Text>
               ) : (
-                <Text style={{ fontSize: 16, color: theme.light.text.primary }}>
-                  {contentData.description}
-                </Text>
+                <Text style={styles.descriptionText}>{contentData.description}</Text>
               )}
             </View>
             <Button onPress={onRestart}>
-              <Text style={{ fontWeight: 'bold', color: theme.colors.white }}>Play Again</Text>
+              <Text style={styles.buttonText}>Play Again</Text>
             </Button>
           </View>
         </View>
