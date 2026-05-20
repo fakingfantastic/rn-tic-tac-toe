@@ -2,6 +2,8 @@
 
 ## Get started
 
+A minimum of Node v20 is required for running the app.
+
 1. Install dependencies
 
    ```bash
@@ -11,10 +13,10 @@
 2. Start the app
 
    ```bash
-   npx expo start
+   npx expo run:ios
    ```
 
-3. To run the test, such as for the finding winner logic, run
+3. To run the test, such as for the finding winner logic, run:
 
    ```bash
    npm run test
