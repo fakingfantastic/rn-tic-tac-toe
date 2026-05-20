@@ -83,7 +83,7 @@ const findDiagonalWinner = (moves: Move[], move: Move, size: number) => {
     interval = size - 1;
   }
 
-  for (let i = move.location; i < size * size; i = i + interval) {
+  for (let i = move.location; i < size * size - move.location; i = i + interval) {
     const moveAtLocation = moves.find(x => x.location === i);
     if (moveAtLocation) {
       playerMoves.push(moveAtLocation);

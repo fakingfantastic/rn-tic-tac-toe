@@ -48,4 +48,20 @@ describe('check for a winner', () => {
 
     expect(findWinner(moves, 5)?.player).toBe(1);
   });
+
+  it('finds a bug', () => {
+    const moves: Move[] = [
+      { location: 6, player: 1, value: 'x' },
+      { location: 1, player: 2, value: 'o' },
+      { location: 0, player: 1, value: 'x' },
+      { location: 5, player: 2, value: 'o' },
+      { location: 4, player: 1, value: 'x' },
+      { location: 8, player: 2, value: 'o' },
+      { location: 7, player: 1, value: 'x' },
+      { location: 3, player: 2, value: 'o' },
+      { location: 2, player: 1, value: 'x' },
+    ];
+
+    expect(findWinner(moves, 3)?.player).toBe(1);
+  });
 });

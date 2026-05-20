@@ -43,7 +43,6 @@ export default function Index() {
       setShowModal(true);
     }
     if (winner?.player === 1) {
-      console.log(isGameOver, winner, addPoints);
       addPoints(50);
     }
   }, [isGameOver, winner, addPoints]);
